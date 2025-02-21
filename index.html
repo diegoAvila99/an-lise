@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador de Visitas</title>
+</head>
+<body>
+    <h1>Bem-vindo ao Meu Site!</h1>
+    <p>Total de visitas: <span id="contador">Carregando...</span></p>
+
+    <script>
+        // URL da API para incrementar e buscar o contador
+        const apiUrl = "https://api.countapi.xyz/hit/diegoavila99.github.io/suportealunos34d";
+
+        // Faz uma requisição para a API
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Atualiza o contador na página
+                document.getElementById('contador').textContent = data.value;
+            })
+            .catch(error => {
+                console.error("Erro ao carregar o contador:", error);
+                document.getElementById('contador').textContent = "Erro ao carregar";
+            });
+    </script>
+</body>
+</html>
