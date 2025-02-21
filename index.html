@@ -15,7 +15,12 @@
 
         // Faz uma requisição para a API
         fetch(apiUrl)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Erro na requisição: " + response.status);
+                }
+                return response.json();
+            })
             .then(data => {
                 // Atualiza o contador na página
                 document.getElementById('contador').textContent = data.value;
