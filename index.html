@@ -3,31 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contador de Visitas</title>
+    <title>Contador Gamer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+            font-family: 'Orbitron', sans-serif;
+            color: #fff;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid #00ff9d;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        h1 {
+            color: #00ff9d;
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            width: 400px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff9d, #00ccff);
+            width: 0;
+            transition: width 1s ease-in-out;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2),
+                transparent);
+            animation: shine 2s infinite;
+        }
+
+        .counter {
+            font-size: 1.5em;
+            color: #00ff9d;
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .glow {
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #00ff9d; }
+            to { text-shadow: 0 0 20px #00ff9d, 0 0 30px #00ff9d; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Bem-vindo ao Meu Site!</h1>
-    <p>Total de visitas: <span id="contador">Carregando...</span></p>
+    <div class="container">
+        <h1>🚀 VISITANTES GALÁCTICOS 🪐</h1>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="counter">
+            <span id="contador">0</span> / 1000
+        </div>
+    </div>
 
     <script>
-        // URL da API para incrementar e buscar o contador
         const apiUrl = "https://api.countapi.xyz/hit/diegoavila99.github.io/suportealunos34d";
+        const targetVisits = 1000; // Altere esta meta conforme necessário
 
-        // Faz uma requisição para a API
         fetch(apiUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Erro na requisição: " + response.status);
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                // Atualiza o contador na página
-                document.getElementById('contador').textContent = data.value;
+                const visits = data.value;
+                const progress = (visits / targetVisits) * 100;
+                
+                // Atualiza a barra de progresso
+                document.getElementById('progress').style.width = `${progress}%`;
+                
+                // Atualiza o contador
+                document.getElementById('contador').textContent = visits;
+                
+                // Adiciona efeito glow se atingir 100%
+                if(visits >= targetVisits) {
+                    document.getElementById('progress').classList.add('glow');
+                }
             })
             .catch(error => {
-                console.error("Erro ao carregar o contador:", error);
-                document.getElementById('contador').textContent = "Erro ao carregar";
+                console.error("Erro:", error);
+                document.getElementById('contador').textContent = "ERROR 404";
             });
     </script>
 </body>
